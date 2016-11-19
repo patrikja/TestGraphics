@@ -1,17 +1,26 @@
 module Lib
-    ( someFunc
+    ( test
     ) where
 import Graphics.Gloss.Data.Picture
+-- import Graphics.Gloss.Data.Bitmap
 
-testp :: Picture
-testp = Bitmap width height bitmap False
-  where width = 200
-        height = 100
-        bitmap = error "To Be Done!"
+import Graphics.Gloss
+import Codec.BMP
+import System.Environment
+
+run fileName
+ = do   picture@(Bitmap width height _ _)
+                <- loadBMP fileName
+
+        display (InWindow fileName (width, height) (10,  10))
+                black $ Pictures
+                  [ rectangleSolid (fromIntegral width) (fromIntegral height)
+                  , picture]
 
 -- Perhaps later: check out https://hackage.haskell.org/package/gloss-raster-accelerate-1.9.0.0/docs/src/Graphics-Gloss-Accelerate-Raster-Array.html
 
+-- Look at simulate or play
+--   https://hackage.haskell.org/package/gloss-1.10.2.3/docs/Graphics-Gloss.html#v:simulte
 
-
-someFunc :: IO ()
-someFunc = putStrLn "someFunc"
+test :: IO ()
+test = run "../img/PaJa_tiny.bmp"
