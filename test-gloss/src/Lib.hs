@@ -1,3 +1,5 @@
+-- Note! This is just a very slow example program.
+
 module Lib
     ( test
     ) where
@@ -18,7 +20,8 @@ test = do
     (pixelSize, pixelSize)
     frame
   where
-    windowSize = (1333, 1000)
+    -- windowSize = (1333, 1000)
+    windowSize = (133, 100)
     pixelSize = 1
 
 type Time = Float
@@ -51,8 +54,8 @@ colorTable =
   , rgbI 106  52   3
   ]
 
-field :: Time -> Point -> Int
-field time (x, y) | endVal < limit  = length allVals
+field :: Point -> Int
+field (x, y) | endVal < limit  = length allVals
                   | otherwise       = 0
   where endVal   = magnitude (last allVals)
         allVals  = q (x:+y)
@@ -70,12 +73,18 @@ f :: C -> (C -> C)
 f a z = z^2 + a
 
 
+alpha = 0.15 -- zoom slowly
+
+zoomedRect :: Time -> Rect  -- towards the seahorse valley http://www.nahee.com/Derbyshire/manguide.html
+zoomedRect t = ((-0.746,0.105),(scalex,0.75*scalex))
+  where scalex = exp (-alpha*t)
+
 {-# INLINE frame #-}
 frame :: Time -> Point -> Color
 frame time p | v == maxIter  = rgbI 0 0 0
              | otherwise     = colorTable !! (v `mod` 16)
   where
-    v = field time (rescale startRect p)
+    v = field (rescale (zoomedRect time) p)
 
 
 type Rect = (Point,Point) -- centre, scale
