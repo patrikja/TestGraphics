@@ -17,3 +17,7 @@ cabal.sandbox.config
 *.eventlog
 .stack-work/
 cabal.project.local
+gloss-examples-1.10.2.4
+test-FieldTrip/FieldTrip-0.2.7.tar.gz
+test-FieldTrip/FieldTrip-0.2.7/
+test-FieldTrip/graphicsFormats-0.1/
